@@ -1,0 +1,143 @@
+<html>
+
+<head>
+    <title>Rick&Morty</title>
+
+    <script>
+        function imageGlass() {
+            var img = document.createElement("img");
+            img.src = "./search.png";
+            var src = document.getElementById("SearchIcon");
+            src.appendChild(img);
+        }
+
+        var url = 'https://rickandmortyapi.com/api/character/?name=';
+        function getJSON(TextoIn) {
+            const myNode = document.getElementById("Results");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.lastChild);
+            }
+
+            fetch(url + TextoIn)
+                .then(response => response.json())
+                .then(data => {
+                    data.results.forEach(elem => {
+                        console.log(elem);
+                        const para = document.createElement("div");
+                        para.id = elem.name;
+                        para.style.width = "350px";
+                        para.style.height = "160px";
+                        para.style.backgroundColor = "#2f4353";
+                        para.style.backgroundImage = "linear-gradient(315deg, #2f4353 0%, #d2ccc4 74%)";
+                        para.style.borderRadius = "15px";
+                        para.style.margin = "10px 10px 10px 10px";
+                        para.style.display = "flex";
+                        para.style.flexFlow = "wrap row";
+
+
+                        var img = document.createElement("img");
+                        img.src = elem.image;
+                        img.id = elem.name + "image";
+                        img.style.maxHeight = "70%";
+                        img.style.borderRadius = "15px";
+
+
+                        var info = document.createElement("div");
+                        info.id = elem.name + "info";
+                        info.style.display = "flex";
+                        info.style.flexFlow = "wrap column";
+                        info.style.margin = "10px 10px 10px 10px";
+                        info.style.color = "#ffffff";
+                        var name = document.createElement("name");
+                        name.innerText = "Name:\n" + elem.name;
+                        info.appendChild(name);
+                        var gender = document.createElement("gender");
+                        gender.innerText = "Gender: " + elem.gender;
+                        info.appendChild(gender);
+                        var location = document.createElement("location");
+                        location.innerText = "Location:\n" + elem.location.name;
+                        info.appendChild(location);
+                        var species = document.createElement("species");
+                        species.innerText = "Species: " + elem.species;
+                        info.appendChild(species);
+                        var status = document.createElement("status");
+                        status.innerText = "Status: " + elem.status;
+                        info.appendChild(status);
+
+                        document.getElementById("Results").appendChild(para);
+                        para.appendChild(img);
+                        para.appendChild(info);
+                    });
+                })
+        }
+
+        window.addEventListener("keydown", function (event) {
+            if (event.keyCode == 13) {
+                getJSON(document.getElementById('SearchCharacter').value);
+            }
+        }, true);
+
+        function checkWidth() {
+            document.getElementById("Results").style.width = (window.innerWidth - 50) + "px";
+        }
+    </script>
+
+    <style>
+        input[type=text] {
+            width: 600px;
+            height: 50px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-color: whitesmoke;
+            border-radius: 5px;
+            background-color: #fabada;
+            color: white;
+            font-size: 45px;
+        }
+
+        body {
+            background-color: #b8c6db;
+            background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 74%);
+        }
+
+        div1 {
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-flow: wrap column;
+        }
+
+        div2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-flow: wrap row;
+        }
+
+        div3 {
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    </style>
+
+</head>
+
+<body onload="imageGlass(); setInterval(checkWidth,10);">
+    <div1 id="SearcherAndResults">
+        <div2 id="Searcher">
+            <input type="text" id="SearchCharacter" name="SearchText">
+            <div21 id="SearchIcon" onclick="getJSON(document.getElementById('SearchCharacter').value)"></div21>
+        </div2>
+        <div3 id="Results">
+
+        </div3>
+    </div1>
+</body>
+
+</html>
